@@ -42,7 +42,7 @@ def run_full_evaluation(model, noise_data, device):
         print(f"--- Patient: {patient} ---")
         clean, noisy, denoised = get_patient_inference(patient, model, noise_data, device)
         
-        # Limit to 200 elements as per your snippet
+        # Limit to 200 elements
         elements = min(200, len(clean))
         avg_snr_noisy = np.mean([calculate_snr(clean[i], noisy[i]) for i in range(elements)])
         avg_snr_denoised = np.mean([calculate_snr(clean[i], denoised[i]) for i in range(elements)])
@@ -92,13 +92,12 @@ if __name__ == "__main__":
     checkpoint = torch.load(config.CHECKPOINT_PATH)
     model.load_state_dict(checkpoint['state_dict'])
     
-    # Mock noise data (Replace with your actual noise_data loading)
     noise_data = np.random.normal(0, 0.05, (1000, config.SAMPLE_SIZE)) 
 
     # Run Eval
     all_results = run_full_evaluation(model, noise_data, device)
     
-    # Generate plots for specific patients mentioned in your request
+    # Generate plots for specific patients mentioned 
     for pid in ['223', '220']:
         if pid in all_results:
             c, n, d = all_results[pid]
