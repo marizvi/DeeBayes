@@ -32,7 +32,6 @@ def main():
     train_clean = load_mit_bih_records(config.DATA_PATH, config.TRAIN_RECORDS, config.SAMPLE_SIZE)
     test_clean = load_mit_bih_records(config.DATA_PATH, config.TEST_RECORDS, config.SAMPLE_SIZE)
     
-    # Dummy noise vector - Replace with actual NSTDB noise loading logic
     noise_vector = prepare_noise_data() 
     train_noisy = add_noise(train_clean, noise_vector, config.SNR_LEVEL)
     test_noisy = add_noise(test_clean, noise_vector, config.SNR_LEVEL)
