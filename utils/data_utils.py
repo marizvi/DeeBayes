@@ -2,6 +2,8 @@ import numpy as np
 import wfdb
 import torch
 from torch.utils.data import Dataset
+import config
+import os
 
 def convert_numpy_tensor(arr):
     return torch.from_numpy(np.array(arr))
@@ -17,7 +19,7 @@ class SignalDataset(Dataset):
     def __getitem__(self, idx):
         return self.noisy_data[idx], self.clean_data[idx]
 
-def load_mit_bih_records(path, records, sample_size, sampto=650000):
+def load_mit_bih_records(path, records, sample_size, sampto=config.SAMPTO_NOISE):
     data = []
     for patient in records:
         try:
@@ -33,6 +35,29 @@ def load_mit_bih_records(path, records, sample_size, sampto=650000):
         except Exception as e:
             print(f"Error loading record {patient}: {e}")
     return np.array(data)
+
+def prepare_noise_data():
+    """Loads and normalizes noise segments based on config parameters."""
+    noise_data = []
+    path = os.path.join(config.DATA_PATH, config.NOISE_RECORD_NAME)
+    
+    # Load record using config variables
+    record = wfdb.rdsamp(path, channels=config.NOISE_CHANNELS, sampto=config.SAMPTO_NOISE)
+    signal_full = record[0][:, 0]
+    
+    for i in range(config.N_SAMPLES):
+        start = i * config.SAMPLE_SIZE
+        end = start + config.SAMPLE_SIZE
+        d = signal_full[start:end]
+        
+        # Min-Max Normalization logic
+        p = np.max(d)
+        q = np.min(d)
+        normalized_segment = (d - q) / (p - q) if p != q else np.zeros_like(d)
+        
+        noise_data.append(normalized_segment.tolist())
+        
+    return noise_data
 
 def add_noise(clean_data, noise_signal, desired_snr):
     # Ensure noise signal is tiled to match clean_data length

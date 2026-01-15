@@ -2,12 +2,17 @@ import os
 
 # Signal Parameters
 SAMPLE_SIZE = 1024
-SNR_LEVEL = 5  # Desired SNR for noise addition
+MAX_SAMPLES = 650000  # sampto parameter
+SNR_LEVEL = 5  # Desired SNR for noise addition# Noise Configuration
+NOISE_RECORD_NAME = 'ma_em'  # Muscle Artifact / Electrode Motion
+NOISE_CHANNELS = [0]
+SAMPTO_NOISE = SAMPLE_SIZE * (MAX_SAMPLES // SAMPLE_SIZE)
 
 # Training Hyperparameters
 BATCH_SIZE = 128
 N_EPOCHS = 75
 LEARNING_RATE = 0.0002
+
 
 # VDN Specific Parameters
 RADIUS = 3

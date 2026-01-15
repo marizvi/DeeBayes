@@ -3,7 +3,7 @@ import torch
 import numpy as np
 from torch.utils.data import DataLoader
 from models.networks import VDN
-from utils.data_utils import load_mit_bih_records, add_noise, SignalDataset
+from utils.data_utils import load_mit_bih_records, add_noise, SignalDataset, prepare_noise_data
 from utils.losses import vdn_loss_fn, sigma_estimate
 import config
 
@@ -33,7 +33,7 @@ def main():
     test_clean = load_mit_bih_records(config.DATA_PATH, config.TEST_RECORDS, config.SAMPLE_SIZE)
     
     # Dummy noise vector - Replace with actual NSTDB noise loading logic
-    noise_vector = np.random.normal(0, 0.1, config.SAMPLE_SIZE) 
+    noise_vector = prepare_noise_data() 
     train_noisy = add_noise(train_clean, noise_vector, config.SNR_LEVEL)
     test_noisy = add_noise(test_clean, noise_vector, config.SNR_LEVEL)
 

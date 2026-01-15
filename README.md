@@ -30,6 +30,12 @@ Our model, **VDNet**, is composed of two primary sub-networks designed to handle
 
 ---
 
+## Results
+![Denoising results under homogeneous and heterogeneous noise types](result.png)
+---
+![Box plot of SNR improvements across methods](result2.png)
+
+
 ## 📂 Project Structure
 
 ```text

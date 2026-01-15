@@ -3,7 +3,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 from models.networks import VDN
-from utils.data_utils import load_mit_bih_records, add_noise, convert_numpy_tensor
+from utils.data_utils import load_mit_bih_records, add_noise, convert_numpy_tensor, prepare_noise_data
 from utils.metrics import calculate_snr, calculate_rmse 
 import config
 
@@ -92,7 +92,7 @@ if __name__ == "__main__":
     checkpoint = torch.load(config.CHECKPOINT_PATH)
     model.load_state_dict(checkpoint['state_dict'])
     
-    noise_data = np.random.normal(0, 0.05, (1000, config.SAMPLE_SIZE)) 
+    noise_data = prepare_noise_data() 
 
     # Run Eval
     all_results = run_full_evaluation(model, noise_data, device)
